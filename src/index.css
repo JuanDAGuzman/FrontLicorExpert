@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+:root {
+  --radius: 14px;
+}
+
+body {
+  background: #ffffff;
+  color: #0f172a;
+}
+
+
+#bg {
+  position: fixed;
+  inset: -20vmax; 
+  z-index: -1;
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+#bg .blob {
+  position: absolute;
+  width: 55vmax;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  opacity: 0.55;
+  animation: float 26s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+
+#bg .b1 {
+  left: -8vmax;
+  top: -6vmax;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(99, 102, 241, 0.45),
+    rgba(99, 102, 241, 0) 60%
+  );
+  animation-duration: 24s;
+}
+#bg .b2 {
+  right: -12vmax;
+  top: -10vmax;
+  background: radial-gradient(
+    circle at 70% 35%,
+    rgba(236, 72, 153, 0.38),
+    rgba(236, 72, 153, 0) 60%
+  );
+  animation-duration: 28s;
+}
+#bg .b3 {
+  left: -6vmax;
+  bottom: -10vmax;
+  background: radial-gradient(
+    circle at 40% 50%,
+    rgba(56, 189, 248, 0.32),
+    rgba(56, 189, 248, 0) 60%
+  );
+  animation-duration: 30s;
+}
+
+@keyframes float {
+  to {
+    transform: translate3d(6vmax, 4vmax, 0) scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #bg .blob {
+    animation: none;
+  }
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.03; 
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,\
+<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'>\
+  <filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter>\
+  <rect width='100%' height='100%' filter='url(%23n)' opacity='0.35'/>\
+</svg>");
+  background-size: 180px 180px;
+}
+
+/* ===== Viñeta suave para profundidad ===== */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+      1200px 600px at 50% 120%,
+      rgba(15, 23, 42, 0.06),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 500px at -10% -10%,
+      rgba(15, 23, 42, 0.04),
+      transparent 55%
+    );
+}
+
+/* Utilidades de tarjeta/botón */
+.card {
+  @apply rounded-2xl border border-slate-200 bg-white/90 backdrop-blur shadow-sm;
+}
+.btn {
+  @apply inline-flex items-center justify-center rounded-xl px-4 py-2 text-sm font-medium transition-colors;
+}
+.btn-primary {
+  @apply bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm;
+}
+.btn-secondary {
+  @apply bg-white border border-slate-300 hover:bg-slate-50;
+}
+.btn-ghost {
+  @apply bg-transparent hover:bg-black/5;
+}

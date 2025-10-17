@@ -15,7 +15,7 @@ export default function Home() {
           </p>
           <div className="mt-6 flex gap-3">
             <Link
-              to="/form"
+              to="/demo"
               className="rounded-xl bg-indigo-600 text-white px-4 py-2 hover:bg-indigo-700"
             >
               Empezar

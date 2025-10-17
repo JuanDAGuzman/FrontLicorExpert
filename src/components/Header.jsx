@@ -17,32 +17,64 @@ export default function Header() {
             Licor<span className="text-indigo-600">Expert</span>
           </Link>
           <nav className="hidden md:flex items-center gap-6 text-sm">
-            <NavLink to="/" className="text-slate-600 hover:text-slate-900">Inicio</NavLink>
-            <NavLink to="/profile" className="text-slate-600 hover:text-slate-900">Mi perfil</NavLink>
+            <NavLink to="/" className="text-slate-600 hover:text-slate-900">
+              Inicio
+            </NavLink>
+            <NavLink to="/demo" className="text-slate-600 hover:text-slate-900">
+              Obtener recomendaciones
+            </NavLink>
+
+            <NavLink
+              to="/profile"
+              className="text-slate-600 hover:text-slate-900"
+            >
+              Mi perfil
+            </NavLink>
           </nav>
 
           {user ? (
             <Menu as="div" className="relative">
               <Menu.Button className="flex items-center gap-2 rounded-xl border border-slate-300 px-3 py-1.5 hover:bg-slate-50">
-                <UserRound size={16}/><span className="hidden sm:block">{user.display_name}</span><ChevronDown size={16}/>
+                <UserRound size={16} />
+                <span className="hidden sm:block">{user.display_name}</span>
+                <ChevronDown size={16} />
               </Menu.Button>
               <Menu.Items className="absolute right-0 mt-2 w-56 rounded-xl border border-slate-200 bg-white shadow-md p-1">
                 <Menu.Item>
-                  {({active}) => (
-                    <Link to="/profile" className={`block rounded-lg px-3 py-2 ${active?"bg-slate-50":""}`}>Mi perfil</Link>
+                  {({ active }) => (
+                    <Link
+                      to="/profile"
+                      className={`block rounded-lg px-3 py-2 ${
+                        active ? "bg-slate-50" : ""
+                      }`}
+                    >
+                      Mi perfil
+                    </Link>
                   )}
                 </Menu.Item>
                 <Menu.Item>
-                  {({active}) => (
-                    <button onClick={logoutAll} className={`w-full text-left rounded-lg px-3 py-2 ${active?"bg-rose-50":""}`}>
+                  {({ active }) => (
+                    <button
+                      onClick={logoutAll}
+                      className={`w-full text-left rounded-lg px-3 py-2 ${
+                        active ? "bg-rose-50" : ""
+                      }`}
+                    >
                       Cerrar sesión en todos los dispositivos
                     </button>
                   )}
                 </Menu.Item>
                 <Menu.Item>
-                  {({active}) => (
-                    <button onClick={logout} className={`w-full text-left rounded-lg px-3 py-2 ${active?"bg-slate-50":""}`}>
-                      <div className="inline-flex items-center gap-2"><LogOut size={16}/> Cerrar sesión</div>
+                  {({ active }) => (
+                    <button
+                      onClick={logout}
+                      className={`w-full text-left rounded-lg px-3 py-2 ${
+                        active ? "bg-slate-50" : ""
+                      }`}
+                    >
+                      <div className="inline-flex items-center gap-2">
+                        <LogOut size={16} /> Cerrar sesión
+                      </div>
                     </button>
                   )}
                 </Menu.Item>
@@ -50,7 +82,7 @@ export default function Header() {
             </Menu>
           ) : (
             <button
-              onClick={()=>setOpen(true)}
+              onClick={() => setOpen(true)}
               className="rounded-xl bg-indigo-600 text-white px-4 py-2 hover:bg-indigo-700 text-sm"
             >
               Iniciar sesión
@@ -59,7 +91,7 @@ export default function Header() {
         </div>
       </header>
 
-      <AuthModal open={open} setOpen={setOpen}/>
+      <AuthModal open={open} setOpen={setOpen} />
     </>
   );
 }

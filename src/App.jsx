@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
-import Form from "./pages/Forms"; 
+import ExpertDemo from "./pages/ExpertDemo";
 
 export default function App() {
   return (
@@ -11,7 +11,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/form" element={<Form />} /> 
+        <Route path="/demo" element={<ExpertDemo />} />
       </Routes>
     </>
   );

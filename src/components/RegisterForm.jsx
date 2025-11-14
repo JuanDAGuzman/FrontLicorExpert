@@ -4,6 +4,7 @@ import CatalogSelect from "./CatalogSelect";
 import Alert from "../ui/Alert";
 import Button from "../ui/Button";
 import { Input, Label } from "../ui/Input";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 
 export default function RegisterForm({ onSuccess }) {

@@ -1,25 +1,44 @@
 import { useEffect, useMemo, useState } from "react";
 import PillToggle from "../ui/PillToggle";
 import { api } from "../api/client";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
+import { Sparkles, Zap, AlertCircle, CheckCircle2, Info } from "lucide-react";
 
-const Card = ({ title, subtitle, children }) => (
-  <div className="card rounded-2xl border border-slate-200 bg-white/70 backdrop-blur p-5 shadow-sm">
-    <div className="flex items-start justify-between">
-      <div className="text-base font-semibold text-slate-800">{title}</div>
-      {subtitle ? (
-        <div className="text-xs text-slate-400">{subtitle}</div>
-      ) : null}
+const Card = ({ title, subtitle, children, gradient = false }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 10 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.3 }}
+    className={`rounded-2xl border p-6 shadow-lg ${
+      gradient
+        ? "bg-gradient-to-br from-white to-indigo-50/30 border-indigo-200"
+        : "bg-white border-slate-200"
+    }`}
+  >
+    <div className="flex items-start justify-between mb-4">
+      <div className="flex items-center gap-2">
+        <div className="text-lg font-semibold text-slate-900">{title}</div>
+        {subtitle ? (
+          <div className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
+            {subtitle}
+          </div>
+        ) : null}
+      </div>
     </div>
-    <div className="mt-4 grid gap-4">{children}</div>
-  </div>
+    <div className="grid gap-4">{children}</div>
+  </motion.div>
 );
 
 const Field = ({ label, children, hint }) => (
-  <div className="rounded-2xl border border-slate-200 bg-white p-4">
+  <div className="rounded-xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-4 hover:shadow-md transition-shadow">
     <div className="text-sm font-medium text-slate-700 mb-2">{label}</div>
     {children}
     {hint ? (
-      <div className="text-[11px] text-slate-400 mt-2">{hint}</div>
+      <div className="text-[11px] text-slate-500 mt-2 flex items-start gap-1">
+        <Info size={12} className="mt-0.5 flex-shrink-0" />
+        <span>{hint}</span>
+      </div>
     ) : null}
   </div>
 );
@@ -320,7 +339,24 @@ export default function ExpertDemo() {
   ]);
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8 grid gap-6 lg:grid-cols-2">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-indigo-50/20 to-violet-50/20">
+      {/* Hero Header */}
+      <div className="bg-gradient-to-r from-indigo-600 to-violet-600 text-white">
+        <div className="max-w-6xl mx-auto px-6 py-8">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-10 h-10 rounded-lg bg-white/20 backdrop-blur flex items-center justify-center">
+              <Sparkles size={20} />
+            </div>
+            <h1 className="text-3xl font-bold">Sistema Experto de Recomendaciones</h1>
+          </div>
+          <p className="text-indigo-100 max-w-2xl">
+            Configura tus preferencias e ingredientes disponibles para obtener la
+            recomendación perfecta de coctel personalizada para ti.
+          </p>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 py-8 grid gap-6 lg:grid-cols-2">
       <div className="grid gap-6">
         <Card title="Preferencias básicas">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -549,62 +585,105 @@ export default function ExpertDemo() {
           </div>
         </Card>
 
-        <div className="flex items-center gap-3">
+        <motion.div
+          className="flex items-center gap-3"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
           <button
             onClick={handleRun}
             disabled={loading}
-            className="rounded-xl bg-violet-600 text-white px-4 py-2 text-sm font-medium shadow hover:bg-violet-700 disabled:opacity-60"
+            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white px-6 py-3 text-sm font-semibold shadow-lg hover:shadow-xl hover:scale-105 disabled:opacity-60 disabled:hover:scale-100 transition-all"
           >
+            <Zap size={18} />
             {loading ? "Consultando..." : "Obtener recomendación"}
           </button>
           {loading ? (
-            <span className="text-xs text-slate-400">Evaluando reglas…</span>
+            <motion.div
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex items-center gap-2 text-sm text-slate-600"
+            >
+              <div className="w-4 h-4 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+              Evaluando reglas…
+            </motion.div>
           ) : null}
-        </div>
+        </motion.div>
       </div>
 
       <div className="grid gap-6">
-        <Card title="Resultado">
-          <div className="flex flex-wrap gap-2 mb-3">{summaryChips}</div>
+        <Card title="🎯 Resultado" gradient>
+          <div className="flex flex-wrap gap-2 mb-4">{summaryChips}</div>
 
           {!result && (
-            <div className="text-sm text-slate-500">
-              Configura tus preferencias y haz clic en{" "}
-              <b>Obtener recomendación</b>.
-            </div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center py-12 text-slate-500"
+            >
+              <Sparkles size={48} className="mx-auto mb-4 text-slate-300" />
+              <p className="text-sm">
+                Configura tus preferencias y haz clic en{" "}
+                <b className="text-indigo-600">Obtener recomendación</b> para descubrir
+                tu coctel perfecto.
+              </p>
+            </motion.div>
           )}
 
           {result?.ok && (
             <>
               {result?.recomendaciones?.length > 0 ? (
-                <div className="rounded-xl border border-violet-200 bg-violet-50 p-4">
-                  <div className="text-sm text-violet-700">Recomendación</div>
-                  <div className="text-lg font-semibold text-violet-900">
-                    {result.recomendaciones[0].valor}
+                <motion.div
+                  initial={{ scale: 0.95, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  className="rounded-2xl border-2 border-emerald-300 bg-gradient-to-br from-emerald-50 to-emerald-100 p-6 shadow-lg"
+                >
+                  <div className="flex items-center gap-2 text-emerald-700 mb-2">
+                    <CheckCircle2 size={20} />
+                    <span className="text-sm font-medium">Recomendación perfecta</span>
                   </div>
-                  <div className="text-xs text-violet-700/70 mt-1">
-                    Regla: {result.recomendaciones[0].regla}
+                  <div className="text-2xl font-bold text-emerald-900 mb-2">
+                    🍹 {result.recomendaciones[0].valor}
                   </div>
-                </div>
+                  <div className="text-xs text-emerald-700/80 bg-emerald-200/50 rounded-lg px-3 py-1 inline-block">
+                    Regla aplicada: {result.recomendaciones[0].regla}
+                  </div>
+                </motion.div>
               ) : result?.top ? (
-                <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
-                  <div className="text-sm text-amber-700">Atención</div>
-                  <div className="text-lg font-semibold text-amber-900">
+                <motion.div
+                  initial={{ scale: 0.95, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  className="rounded-2xl border-2 border-amber-300 bg-gradient-to-br from-amber-50 to-amber-100 p-6 shadow-lg"
+                >
+                  <div className="flex items-center gap-2 text-amber-700 mb-2">
+                    <AlertCircle size={20} />
+                    <span className="text-sm font-medium">Advertencia detectada</span>
+                  </div>
+                  <div className="text-xl font-bold text-amber-900 mb-2">
                     {result.top.valor}
                   </div>
-                  <div className="text-xs text-amber-700/70 mt-1">
+                  <div className="text-xs text-amber-700/80 bg-amber-200/50 rounded-lg px-3 py-1 inline-block">
                     Regla: {result.top.regla}
                   </div>
-                </div>
+                </motion.div>
               ) : (
-                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                  <div className="text-sm text-slate-700">
-                    Sin coincidencias
+                <motion.div
+                  initial={{ scale: 0.95, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  className="rounded-2xl border border-slate-300 bg-gradient-to-br from-slate-50 to-slate-100 p-6"
+                >
+                  <div className="flex items-center gap-2 text-slate-700 mb-3">
+                    <Info size={20} />
+                    <span className="text-sm font-semibold">Sin coincidencias</span>
                   </div>
-                  <div className="text-xs text-slate-500 mt-1 leading-5">
+                  <div className="text-sm text-slate-600 leading-relaxed mb-3">
                     No encontramos una regla aplicable con los insumos actuales.
-                    <br />
-                    Prueba alguna de estas opciones:
+                  </div>
+                  <div className="text-xs text-slate-500 bg-white rounded-lg p-3 border border-slate-200">
+                    <div className="font-medium text-slate-700 mb-2">
+                      💡 Prueba alguna de estas opciones:
+                    </div>
                     <ul className="list-disc ml-5 mt-1">
                       <li>
                         Activa <b>burbujeante</b> y alguna opción (p. ej.{" "}
@@ -621,51 +700,66 @@ export default function ExpertDemo() {
                       </li>
                     </ul>
                   </div>
-                </div>
+                </motion.div>
               )}
             </>
           )}
 
           {result?.ok && result?.recomendaciones?.length > 1 ? (
-            <div className="mt-4">
-              <div className="text-sm font-semibold text-slate-700 mb-1">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="mt-4"
+            >
+              <div className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
+                <Sparkles size={16} className="text-indigo-600" />
                 Otras coincidencias
               </div>
               <ul className="grid gap-2">
                 {result.recomendaciones.slice(1).map((r, i) => (
-                  <li
+                  <motion.li
                     key={`rec-${i}`}
-                    className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                    className="rounded-xl border border-indigo-200 bg-gradient-to-r from-indigo-50 to-white px-4 py-3 text-sm text-slate-700 hover:shadow-md transition-shadow"
                   >
-                    {r.valor}{" "}
-                    <span className="ml-2 text-[11px] opacity-70">
-                      ({r.regla})
+                    <span className="font-medium">{r.valor}</span>
+                    <span className="ml-2 text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
+                      {r.regla}
                     </span>
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
-            </div>
+            </motion.div>
           ) : null}
 
           {result?.ok &&
           (result?.fallas?.critical?.length ||
             result?.fallas?.warning?.length ||
             result?.fallas?.info?.length) ? (
-            <div className="mt-4 grid gap-3">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="mt-4 grid gap-4"
+            >
               {result.fallas.critical?.length ? (
-                <div>
-                  <div className="text-sm font-semibold text-rose-700 mb-2">
+                <div className="rounded-xl border-2 border-rose-200 bg-rose-50/50 p-4">
+                  <div className="text-sm font-semibold text-rose-700 mb-3 flex items-center gap-2">
+                    <AlertCircle size={16} />
                     Advertencias críticas
                   </div>
                   <ul className="grid gap-2">
                     {result.fallas.critical.map((f, i) => (
                       <li
                         key={`c-${i}`}
-                        className="rounded-xl border border-rose-200 bg-rose-50 text-rose-900 px-3 py-2 text-sm"
+                        className="rounded-lg border border-rose-300 bg-white text-rose-900 px-3 py-2 text-sm"
                       >
-                        {f.valor}{" "}
-                        <span className="ml-2 text-xs opacity-70">
-                          ({f.regla})
+                        <span className="font-medium">{f.valor}</span>
+                        <span className="ml-2 text-xs text-rose-700 bg-rose-100 px-2 py-0.5 rounded-full">
+                          {f.regla}
                         </span>
                         {f.category ? (
                           <span className="ml-2 inline-flex items-center rounded-full border border-slate-200 px-2 py-0.5 text-[11px] text-slate-600">
@@ -679,19 +773,20 @@ export default function ExpertDemo() {
               ) : null}
 
               {result.fallas.warning?.length ? (
-                <div>
-                  <div className="text-sm font-semibold text-amber-700 mb-2">
+                <div className="rounded-xl border-2 border-amber-200 bg-amber-50/50 p-4">
+                  <div className="text-sm font-semibold text-amber-700 mb-3 flex items-center gap-2">
+                    <AlertCircle size={16} />
                     Advertencias
                   </div>
                   <ul className="grid gap-2">
                     {result.fallas.warning.map((f, i) => (
                       <li
                         key={`w-${i}`}
-                        className="rounded-xl border border-amber-200 bg-amber-50 text-amber-900 px-3 py-2 text-sm"
+                        className="rounded-lg border border-amber-300 bg-white text-amber-900 px-3 py-2 text-sm"
                       >
-                        {f.valor}{" "}
-                        <span className="ml-2 text-xs opacity-70">
-                          ({f.regla})
+                        <span className="font-medium">{f.valor}</span>
+                        <span className="ml-2 text-xs text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">
+                          {f.regla}
                         </span>
                         {f.category ? (
                           <span className="ml-2 inline-flex items-center rounded-full border border-slate-200 px-2 py-0.5 text-[11px] text-slate-700">
@@ -705,19 +800,20 @@ export default function ExpertDemo() {
               ) : null}
 
               {result.fallas.info?.length ? (
-                <div>
-                  <div className="text-sm font-semibold text-slate-600 mb-2">
-                    Notas
+                <div className="rounded-xl border-2 border-blue-200 bg-blue-50/50 p-4">
+                  <div className="text-sm font-semibold text-blue-700 mb-3 flex items-center gap-2">
+                    <Info size={16} />
+                    Notas informativas
                   </div>
                   <ul className="grid gap-2">
                     {result.fallas.info.map((f, i) => (
                       <li
                         key={`i-${i}`}
-                        className="rounded-xl border border-slate-200 bg-slate-50 text-slate-700 px-3 py-2 text-sm"
+                        className="rounded-lg border border-blue-300 bg-white text-blue-900 px-3 py-2 text-sm"
                       >
-                        {f.valor}{" "}
-                        <span className="ml-2 text-xs opacity-70">
-                          ({f.regla})
+                        <span className="font-medium">{f.valor}</span>
+                        <span className="ml-2 text-xs text-blue-700 bg-blue-100 px-2 py-0.5 rounded-full">
+                          {f.regla}
                         </span>
                         {f.category ? (
                           <span className="ml-2 inline-flex items-center rounded-full border border-slate-200 px-2 py-0.5 text-[11px] text-slate-600">
@@ -729,22 +825,37 @@ export default function ExpertDemo() {
                   </ul>
                 </div>
               ) : null}
-            </div>
+            </motion.div>
           ) : null}
 
           {result && !result.ok && (
-            <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">
-              {result.message || "Error"}
-            </div>
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="rounded-xl border-2 border-rose-300 bg-rose-50 p-4 text-sm text-rose-700 flex items-start gap-2"
+            >
+              <AlertCircle size={18} className="flex-shrink-0 mt-0.5" />
+              <div>
+                <div className="font-semibold mb-1">Error al obtener recomendación</div>
+                <div className="text-rose-600">{result.message || "Error desconocido"}</div>
+              </div>
+            </motion.div>
           )}
         </Card>
 
-        <Card title="Payload que se envía">
-          <pre className="text-xs leading-5 whitespace-pre-wrap rounded-xl border border-slate-200 bg-slate-50 p-3 text-slate-700">
-            {JSON.stringify(facts, null, 2)}
-          </pre>
+        <Card title="📊 Datos enviados">
+          <details className="group">
+            <summary className="cursor-pointer text-sm text-indigo-600 hover:text-indigo-700 font-medium mb-2 flex items-center gap-2">
+              <span className="group-open:rotate-90 transition-transform">▶</span>
+              Ver JSON de la consulta
+            </summary>
+            <pre className="text-xs leading-5 whitespace-pre-wrap rounded-xl border border-slate-200 bg-slate-900 p-4 text-emerald-400 overflow-auto max-h-96 font-mono">
+              {JSON.stringify(facts, null, 2)}
+            </pre>
+          </details>
         </Card>
       </div>
+    </div>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { Dialog, Transition, Tab } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { useAuth } from "../state/AuthContext";
 import { api } from "../api/client";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 
 function Field({ label, ...props }) {

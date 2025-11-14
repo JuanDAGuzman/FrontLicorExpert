@@ -7,9 +7,12 @@ export function evalPretty(facts) {
   });
 }
 
-export function recomendarLegacy(facts, userId = null) {
+export function recomendar(facts) {
   return api("/expert/recomendar", {
     method: "POST",
-    body: JSON.stringify({ facts, userId }),
+    body: JSON.stringify({ facts }),
   });
 }
+
+// Mantener compatibilidad con código anterior
+export const recomendarLegacy = recomendar;

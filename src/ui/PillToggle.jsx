@@ -1,4 +1,5 @@
 // src/ui/PillToggle.jsx
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useId } from "react";
 import clsx from "clsx";

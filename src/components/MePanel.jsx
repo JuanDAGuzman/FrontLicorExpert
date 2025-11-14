@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { api } from "../api/client";
 import Alert from "../ui/Alert";
 import Button from "../ui/Button";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { EllipsisVertical, LogOut, RefreshCcw, UserRound } from "lucide-react";
 import { Menu } from "@headlessui/react";
